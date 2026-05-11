@@ -28,7 +28,7 @@ pub fn tokenizer(items: Vec<String>) -> Vec<Instruction> {
     //   10000 hi
     //   100 2 +++
     // Scan available characters
-    for i in items.iter() {
+    for i in items.iter().rev() {
         // In case parse to f64 fails it just will assume first this might be an
         // operator, in any other case it panics
         let instruction: Instruction = if let Ok(n) = i.parse::<f64>() {
@@ -41,10 +41,10 @@ pub fn tokenizer(items: Vec<String>) -> Vec<Instruction> {
                 '-' => Instruction::Operator(OpType::Sub),
                 '*' | 'x' => Instruction::Operator(OpType::Mul),
                 '/' => Instruction::Operator(OpType::Div),
-                _ => panic!("Invalid character: {sign}"),
+                _ => panic!("[ERROR][TOKENIZER] Invalid character: {sign}"),
             }
         } else {
-            panic!("Invalid series of characters {i}");
+            panic!("[ERROR][TOKENIZER] Invalid series of characters: \"{i}\"");
         };
         tokens.push(instruction);
     }
